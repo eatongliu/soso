@@ -1,4 +1,4 @@
-package com.apabi.soso.center.service;
+package com.apabi.center.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.apabi.soso.service.domain.BusinessDomain;

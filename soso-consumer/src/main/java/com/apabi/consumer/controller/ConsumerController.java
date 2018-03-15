@@ -1,4 +1,4 @@
-package com.apabi.soso.consumer.controller;
+package com.apabi.consumer.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.apabi.soso.service.domain.BusinessDomain;
@@ -17,15 +17,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * JDK: since 1.8
  */
 @Controller
-public class BusinessConsumerController {
+public class ConsumerController {
 
-  @Reference(version = "1.0.0")
-  public BusinessService businessService;
+    @Reference(version = "1.0.0")
+    public BusinessService businessService;
 
 
-  @RequestMapping("/business")
-  @ResponseBody
-  public BusinessDomain getBusiness() {
-    return businessService.findBusiness(1, "businessaaa");
-  }
+    @RequestMapping("/business")
+    @ResponseBody
+    public BusinessDomain getBusiness() {
+        return businessService.findBusiness(1, "businessaaa");
+    }
+
+    @RequestMapping("/login")
+    public String toLogin() {
+        return "login";
+    }
+
+    @RequestMapping("/index")
+    public String toIndex() {
+        return "index";
+    }
 }

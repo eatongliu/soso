@@ -1,4 +1,4 @@
-package com.apabi.soso.consumer;
+package com.apabi.consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
