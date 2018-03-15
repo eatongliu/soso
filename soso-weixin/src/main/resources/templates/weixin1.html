@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <link th:href="@{https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js}"></script>
+    <script th:src="@{/js/jweixin-1.2.0.js}"></script>
+    <title>微信测试</title>
+    <script type="text/javascript" >
+        var a = '[[${#servletContext.contextPath}]]';
+        console.log(a);
+        var url = window.location.href;
+        $(function () {
+            //微信分享
+            $.ajax({
+                "url": "getJsAPITicket",  //接口地址
+                "type": "Get",
+                "dataType": "json",
+                "data": {"url": url},
+                "success": function (data) {
+                    wxstart(data.data);
+                }
+            });
+        });
+
+        function wxstart(data) {
+            var url = url;  //分享的文章地址
+            var appId = data.appId;
+            var timestamp = data.timestamp;
+            var nonceStr = data.nonceStr;
+            var signature = data.signature;
+            wx.config({
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: appId, // 必填，公众号的唯一标识
+                timestamp: timestamp, // 必填，生成签名的时间戳
+                nonceStr: nonceStr, // 必填，生成签名的随机串
+                signature: signature,// 必填，签名，见附录1
+                jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage", "onMenuShareQQ"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            });
+
+            wx.ready(function () {
+                var imgurl = 'images/picture.jpg.jpg';
+                var title = '分享接口';
+                var desc = '请注意不要有诱导分享等违规行为，对于诱导分享行为将永久回收公众号接口权限，详细规则请查看：朋友圈管理常见问题';
+                wx.onMenuShareTimeline({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: url, // 分享链接
+                    imgUrl: imgurl, // 分享图标
+                    success: function () {
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+
+                wx.onMenuShareAppMessage({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: url, // 分享链接
+                    imgUrl: imgurl, // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function () {
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+
+                wx.onMenuShareQQ({
+                    title: title, // 分享标题
+                    desc: desc, // 分享描述
+                    link: url, // 分享链接
+                    imgUrl: imgurl, // 分享图标
+                    success: function () {
+                        // 用户确认分享后执行的回调函数
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                    }
+                });
+            });
+        }
+
+    </script>
+</head>
+<body>
+<div class="page-header">
+    <h2 class="text-center">hello <span th:text="${session.currUser}" id="currUser"></span></h2>
+</div>
+<p>aaaaaaaaaaaaa
+<p th:text="${#servletContext.contextPath}">
+</body>
+</html>
