@@ -1,11 +1,20 @@
 package com.apabi.weixin.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.apabi.soso.service.vo.RespData;
+import com.apabi.weixin.utils.WechatUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,5 +43,31 @@ public class WechatController {
 //        respData.setData(WechatUtil.sign(url));
         respData.setData(ret);
         return respData;
+    }
+
+    @RequestMapping("/index")
+    public String weixin3(Model model) {
+        String  redirectUrl = "";
+        try {
+            redirectUrl = URLEncoder.encode("http://xuyy.viphk.ngrok.org/soso-weixin/weixin2?a=1", "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String wxOauthUrl= "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86280a282df8bbf0&redirect_uri=" + redirectUrl + "&response_type=code&scope=snsapi_userinfo&state=xxxx_state#wechat_redirect";
+
+        return "redirect:" + wxOauthUrl;
+    }
+
+    @RequestMapping("weixin2")
+    public String getCode(@RequestParam String code, @RequestParam String state, HttpServletRequest request) {
+        String appId = "wx86280a282df8bbf0";
+        String appSecret = "cbebf44c214efb4027d01d7e446af06e";
+        JSONObject tokenJson = WechatUtil.getOauth2AccessToken(appId, appSecret, code);
+
+        String accessToken = tokenJson.getString("access_token");
+        String openId = tokenJson.getString("openid");
+        JSONObject infoJson = WechatUtil.getUserBaseinfo(accessToken, openId);
+        request.setAttribute("authUser", infoJson);
+        return "weixin2";
     }
 }

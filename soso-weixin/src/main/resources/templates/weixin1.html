@@ -6,20 +6,28 @@
     <script type="text/javascript" th:src="@{https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js}"></script>
     <script th:src="@{/js/jweixin-1.2.0.js}"></script>
     <title>微信测试</title>
+    <style>
+        body{
+            font-size: 30px;
+        }
+    </style>
     <script type="text/javascript" >
-        var a = '[[${#servletContext.contextPath}]]';
-        console.log(a);
         var url = window.location.href;
         $(function () {
-            //微信分享
-            $.ajax({
-                "url": "getJsAPITicket",  //接口地址
-                "type": "Get",
-                "dataType": "json",
-                "data": {"url": url},
-                "success": function (data) {
-                    wxstart(data.data);
-                }
+            // //微信分享
+            // $.ajax({
+            //     "url": "getJsAPITicket",  //接口地址
+            //     "type": "Get",
+            //     "dataType": "json",
+            //     "data": {"url": url},
+            //     "success": function (data) {
+            //         wxstart(data.data);
+            //     }
+            // });
+            $('#oauth2Test').on('click', function () {
+                // var  redirectUrl = encodeURI("http://ngroksoso.free.ngrok.cc/soso-weixin/weixin2");
+                var  redirectUrl = encodeURI("http://xuyy.viphk.ngrok.org/soso-weixin/weixin2");
+                window.location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx86280a282df8bbf0&redirect_uri=" + redirectUrl + "&response_type=code&scope=snsapi_userinfo&state=xxxx_state#wechat_redirect";
             });
         });
 
@@ -93,5 +101,6 @@
 </div>
 <p>aaaaaaaaaaaaa
 <p th:text="${#servletContext.contextPath}">
+<div><button class="btn default-btn" id="oauth2Test">授权测试</button></div>
 </body>
 </html>

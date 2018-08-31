@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <link th:href="@{https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js}"></script>
+    <title>微信测试2</title>
+    <script type="text/javascript" >
+
+
+    </script>
+</head>
+<body>
+<div class="page-header">
+    <h2 class="text-center">hello <span th:text="${authUser.nickname}" id="currUser"></span></h2>
+</div>
+<h1>授权成功</h1>
+<h3 class="text-center" th:text="${authUser.openid}"></h3>
+<h3 class="text-center" th:text="${authUser.sex}"></h3>
+<h3 class="text-center" th:text="${authUser.country}"></h3>
+<h3 class="text-center" th:text="${authUser.province}"></h3>
+<h3 class="text-center" th:text="${authUser.city}"></h3>
+<img th:src="${authUser.headimgurl}">
+</body>
+</html>

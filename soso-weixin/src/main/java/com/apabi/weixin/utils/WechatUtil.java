@@ -3,10 +3,15 @@ package com.apabi.weixin.utils;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -17,7 +22,7 @@ import java.util.UUID;
  * Created by liuyutong on 2018/2/26.
  */
 public class WechatUtil {
-    private final Logger logger = LoggerFactory.getLogger(WechatUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(WechatUtil.class);
 
 
     public static String getAccessToken() {
@@ -174,5 +179,31 @@ public class WechatUtil {
         //6、将字符串进行sha1加密
         String signature =SHA1(str);
         System.out.println("参数："+str+"\n签名："+signature);
+    }
+
+    public static JSONObject getOauth2AccessToken(String appId, String appSecret, String code) {
+        String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + appId + "&secret=" + appSecret + "&code=" + code +"&grant_type=authorization_code";
+        logger.debug(url);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        restTemplate.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
+        String response = restTemplate.getForObject(url, String.class);
+        logger.debug(response);
+        JSONObject responseJson = JSONObject.parseObject(response);
+        return responseJson;
+    }
+
+    public static JSONObject getUserBaseinfo(String accessToken, String openId){
+        String url = "https://api.weixin.qq.com/sns/userinfo?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN";
+        logger.debug(url);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
+        String response = restTemplate.getForObject(url, String.class);
+        logger.debug(response);
+        JSONObject responseJson = JSONObject.parseObject(response);
+        return responseJson;
     }
 }
