@@ -20,7 +20,7 @@
             <property name="forceBigDecimals" value="true" />
         </javaTypeResolver>
         <!-- targetProject:自动生成代码的位置 -->
-        <javaModelGenerator targetPackage="com.apabi.center.entity"
+        <javaModelGenerator targetPackage="com.tingyun.center.entity"
                             targetProject="D:\devRepository\workspace05-idea03-dubbo\soso\soso-center\src\main\java">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="true" />
@@ -32,7 +32,7 @@
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.apabi.center.mapper"
+                             targetPackage="com.tingyun.center.mapper"
                              targetProject="D:\devRepository\workspace05-idea03-dubbo\soso\soso-center\src\main\java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
